@@ -55,5 +55,6 @@ int main (int ac, char **av)
     if (ac != 2) // Arguman kontrolu
         return (1);
     int n = ft_strlen(av[1]); // Permutasyonunu alacagimiz stringin uzunlugu
+    sort(av[1]); // Her durumda ne gelirse gelsin ilk gelen herşeyi alfabetik sirala
     prmt(av[1] , 0 , n - 1); // Permutasyon islemini yapacagimiz fonksiyona gonderiyoruz, n - 1 durumu ise index olarak kontrol edecegimizden dolayi n - 1 olarak gonderiyoruz
 }
