@@ -39,13 +39,18 @@ void    prmt(char *s, int l , int r) // l = left, stringin soldan kontrolu icin 
     }
     else
     {
+        int used[256] = {0};
         int i = l; // Baslangicimizi tutmak icin bir i degiskeni olusturuyoruz
         while (i <= r) // Baslangicimizdan stringimizin sonuna kadar tum karakterleri kontrol etmek icin i yi donguye sokuyoruz
         {
-            swap(s + l , s + i); // Tum olasiklilari ele almak icin ilk basta stringin elemanlarini yer degistiriyoruz
-            sort(s + l + 1); // Pdf yazdirma sirasinin alfabetik olmasini istediginden dolayi ilk karakterlerin yerini degistirdikten sonra elde edilen stringi alfabetik olarak siralamaya gonderiyoruz
-            prmt(s , l + 1 , r); // Bir soldan permutasyon almaya devam etmek icin l yi 1 arttirip tekrardan recursive donguye sokuyoruz
-            swap(s + l, s + i); // Ardindan islem bittikten sonra stringimizin ilk haline donmesi icin yerini degistirdigimiz karakterlerin yerlerini eski hallerine donduruyoruz
+            if (!used[(unsigned char)s[i]])
+            {
+                used[(unsigned char)s[i]] = 1;
+                swap(s + l , s + i); // Tum olasiklilari ele almak icin ilk basta stringin elemanlarini yer degistiriyoruz
+                sort(s + l + 1); // Pdf yazdirma sirasinin alfabetik olmasini istediginden dolayi ilk karakterlerin yerini degistirdikten sonra elde edilen stringi alfabetik olarak siralamaya gonderiyoruz
+                prmt(s , l + 1 , r); // Bir soldan permutasyon almaya devam etmek icin l yi 1 arttirip tekrardan recursive donguye sokuyoruz
+                swap(s + l, s + i); // Ardindan islem bittikten sonra stringimizin ilk haline donmesi icin yerini degistirdigimiz karakterlerin yerlerini eski hallerine donduruyoruz
+            }
             i++; // Tum ihtimallere bakmak icin i yi teker teker arttiriyoruz
         }
     }
@@ -58,3 +63,5 @@ int main (int ac, char **av)
     sort(av[1]); // Her durumda ne gelirse gelsin ilk gelen herşeyi alfabetik sirala
     prmt(av[1] , 0 , n - 1); // Permutasyon islemini yapacagimiz fonksiyona gonderiyoruz, n - 1 durumu ise index olarak kontrol edecegimizden dolayi n - 1 olarak gonderiyoruz
 }
+
+// Prmt fonksiyonunun icinde used degiskeni optimizasyon icin var.Eger kodunuz fazla ihtimal iceren bir prompt girildiginde timeout'a dusuyorsa used'i kullanabilirsiniz

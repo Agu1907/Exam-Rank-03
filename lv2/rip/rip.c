@@ -1,4 +1,43 @@
 #include <stdio.h>
+
+char    valid_string[100000][256];
+int     valid_counter = 0;
+
+int ft_strcmp(char *s1, char *s2)
+{
+    int i = 0;
+    while (s1 && s2 && s1[i] == s2[i])
+        i++;
+    return (s1[i] - s2[i]);
+}
+char    *ft_strcpy(char *dst, char *src)
+{
+    int i = 0;
+    while (src[i])
+    {
+        dst[i] = src[i];
+        i++;
+    }
+    return (dst);
+}
+int is_valid(char *s)
+{
+    int i = 0;
+    while (i < valid_counter)
+    {
+        if (ft_strcmp(valid_string[i], s) == 0)
+            return (1);
+        i++;
+    }
+    return (0);
+}
+void    set_valid(char *s)
+{
+    if (valid_counter >= 100000)
+        return;
+    ft_strcpy(valid_string[valid_counter] , s);
+    valid_counter++;
+}
 int paranthesis(char *s)
 {
     int opened = 0; // Acilan parantezler icin tanimlanan degisken
@@ -22,11 +61,18 @@ int paranthesis(char *s)
 }
 void    rip(char *s, int must_fix, int n_fix , int pos)  //  must_fix = handle edilmesi gereken parantez sayisi | n_fix = suana kadar handle edilen parantez sayisi | pos = anlik olarak durdugun pozisyon
 {
+    if (n_fix > must_fix)
+        return;
+    if (paranthesis(s) > must_fix - n_fix)
+        return;
     if (n_fix == must_fix && !paranthesis(s)) // Fixleyecegin tum parantezler hallolduysa ve stringde handle edicek parantez kalmadiysa
     {
         puts(s); // Stringi yazdir ve cik
         return;
     }
+    if (is_valid(s))
+        return;
+    set_valid(s);
     int i = pos; // Oldugun en son pozisyonu i ye at ve i den isleme devam et
     while (s[i])
     {
